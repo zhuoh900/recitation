@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DUSTARCHIVE</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --dust:    #D4C5A9;
+    --sand:    #BFB097;
+    --ochre:   #A8854A;
+    --raw:     #8C7355;
+    --shadow:  #3D3128;
+    --void:    #1E1710;
+    --concrete:#6B6258;
+    --bone:    #E8DFD0;
+    --burn:    #7A4F2D;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--void);
+    color: var(--dust);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    cursor: crosshair;
+  }
+
+  /* grain overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 999;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 128px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 48px;
+    border-bottom: 1px solid var(--shadow);
+    background: rgba(30,23,16,0.92);
+    backdrop-filter: blur(2px);
+  }
+
+  .nav-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px; font-weight: 800;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--bone);
+  }
+
+  .nav-links {
+    display: flex; gap: 40px;
+  }
+
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--concrete); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--dust); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* geometric desert shapes in background */
+  .hero-geo {
+    position: absolute; inset: 0; pointer-events: none;
+  }
+
+  .geo-block {
+    position: absolute;
+    background: var(--shadow);
+  }
+
+  .geo-1 { width: 340px; height: 340px; bottom: 0; right: 80px; }
+  .geo-2 { width: 180px; height: 560px; bottom: 0; right: 420px; background: var(--void); border-left: 1px solid var(--shadow); }
+  .geo-3 { width: 60px; height: 180px; top: 30%; left: 0; background: var(--shadow); }
+  .geo-4 { width: 1px; height: 100%; top: 0; left: 48%; background: var(--shadow); }
+  .geo-5 { width: 100%; height: 1px; top: 72%; left: 0; background: var(--shadow); }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 120px 48px 80px;
+    position: relative; z-index: 2;
+  }
+
+  .hero-coord {
+    font-size: 10px; letter-spacing: 0.2em; color: var(--concrete);
+    margin-bottom: 32px;
+  }
+
+  .hero-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(80px, 14vw, 180px);
+    font-weight: 800;
+    line-height: 0.88;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--bone);
+    margin-bottom: 40px;
+    max-width: 800px;
+  }
+
+  .hero-title span {
+    display: block;
+    color: var(--ochre);
+  }
+
+  .hero-sub {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 60px;
+    align-items: end;
+    border-top: 1px solid var(--shadow);
+    padding-top: 32px;
+  }
+
+  .hero-desc {
+    font-size: 12px; line-height: 1.8; color: var(--concrete);
+    max-width: 280px;
+  }
+
+  .hero-meta {
+    display: flex; gap: 48px;
+  }
+
+  .meta-item { }
+  .meta-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--raw); margin-bottom: 4px; }
+  .meta-val { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; color: var(--dust); letter-spacing: 0.05em; }
+
+  /* ── SECTIONS ── */
+  section {
+    border-top: 1px solid var(--shadow);
+  }
+
+  .section-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 48px;
+  }
+
+  .section-label {
+    font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--raw); margin-bottom: 48px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--shadow); }
+
+  /* ── ARCHIVE GRID ── */
+  .archive-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--shadow);
+    border: 1px solid var(--shadow);
+  }
+
+  .archive-item {
+    background: var(--void);
+    padding: 40px 32px;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .archive-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--ochre);
+    transition: height 0.3s;
+  }
+
+  .archive-item:hover { background: #231c13; }
+  .archive-item:hover::before { height: 100%; }
+
+  .item-num {
+    font-size: 10px; letter-spacing: 0.15em; color: var(--shadow);
+    margin-bottom: 24px;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+  }
+
+  .item-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.03em; color: var(--dust);
+    margin-bottom: 12px; line-height: 1.1;
+  }
+
+  .item-year {
+    font-size: 10px; letter-spacing: 0.1em; color: var(--raw);
+    margin-bottom: 16px;
+  }
+
+  .item-desc {
+    font-size: 11px; color: var(--concrete); line-height: 1.7;
+  }
+
+  /* ── MONUMENT STRIP ── */
+  .monument {
+    background: var(--shadow);
+    padding: 0 48px;
+    overflow: hidden;
+    border-top: 1px solid #3d3128;
+    border-bottom: 1px solid #3d3128;
+  }
+
+  .monument-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 2px 1fr;
+    gap: 0;
+  }
+
+  .monument-divider { background: var(--raw); }
+
+  .monument-left, .monument-right {
+    padding: 80px 60px 80px 0;
+  }
+  .monument-right { padding: 80px 0 80px 60px; }
+
+  .monument-quote {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--dust);
+    letter-spacing: -0.01em;
+    margin-bottom: 24px;
+  }
+
+  .monument-attr {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--raw);
+  }
+
+  .monument-coords {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; color: var(--concrete);
+    line-height: 2.2;
+  }
+
+  .monument-coords span { display: block; }
+
+  /* ── ABOUT ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .about-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 64px; font-weight: 800; text-transform: uppercase;
+    line-height: 0.9; color: var(--bone); margin-bottom: 32px;
+    letter-spacing: -0.02em;
+  }
+
+  .about-body {
+    font-size: 12px; line-height: 2; color: var(--concrete);
+  }
+
+  .about-body p { margin-bottom: 20px; }
+
+  .about-right {
+    padding-top: 8px;
+  }
+
+  .stat-block {
+    border-top: 1px solid var(--shadow);
+    padding: 24px 0;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .stat-item { }
+  .stat-n {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 48px; font-weight: 700; line-height: 1;
+    color: var(--ochre); letter-spacing: -0.02em;
+  }
+  .stat-l { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--raw); margin-top: 6px; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--shadow);
+    padding: 40px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-left {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px; font-weight: 800; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--shadow);
+  }
+
+  .footer-right {
+    font-size: 10px; letter-spacing: 0.15em; color: var(--shadow);
+    text-align: right; line-height: 1.8;
+  }
+
+  /* ── TICKER ── */
+  .ticker {
+    background: var(--ochre);
+    padding: 10px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .ticker-inner {
+    display: inline-flex; gap: 0;
+    animation: ticker 25s linear infinite;
+  }
+
+  .ticker-item {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--void);
+    padding: 0 32px;
+  }
+
+  .ticker-sep { color: var(--burn); padding: 0 8px; }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero-content { padding: 100px 24px 60px; }
+    .hero-sub { grid-template-columns: 1fr; gap: 32px; }
+    .section-inner { padding: 60px 24px; }
+    .archive-grid { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .monument-inner { grid-template-columns: 1fr; }
+    .monument-divider { display: none; }
+    .monument-left, .monument-right { padding: 48px 0; }
+    footer { flex-direction: column; gap: 20px; text-align: center; padding: 32px 24px; }
+    .geo-block { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Dustarchive</div>
+  <div class="nav-links">
+    <a href="#archive">Archive</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-geo">
+    <div class="geo-block geo-1"></div>
+    <div class="geo-block geo-2"></div>
+    <div class="geo-block geo-3"></div>
+    <div class="geo-block geo-4"></div>
+    <div class="geo-block geo-5"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-coord">37°12'N 115°48'W — NEVADA BASIN</div>
+    <h1 class="hero-title">
+      Dust<span>Archive</span>
+    </h1>
+    <div class="hero-sub">
+      <p class="hero-desc">
+        A record of forms cut into earth.<br>
+        Mass without ornament.<br>
+        Time made visible in stone and silence.
+      </p>
+      <div class="hero-meta">
+        <div class="meta-item">
+          <div class="meta-label">Est.</div>
+          <div class="meta-val">1972</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Area</div>
+          <div class="meta-val">1.5 mi²</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Elevation</div>
+          <div class="meta-val">5,312 ft</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item">Complex One</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Complex Two</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Complex Three</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Complex Four</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Complex Five</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Complex Six</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Complex One</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Complex Two</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Complex Three</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Complex Four</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Complex Five</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Complex Six</span><span class="ticker-sep">—</span>
+  </div>
+</div>
+
+<!-- ARCHIVE -->
+<section id="archive">
+  <div class="section-inner">
+    <div class="section-label">Archive — Field Records</div>
+    <div class="archive-grid">
+      <div class="archive-item">
+        <div class="item-num">001</div>
+        <div class="item-title">Complex One</div>
+        <div class="item-year">1972 — Ongoing</div>
+        <div class="item-desc">The first structure. A mound of compacted earth rising from the basin floor. Orientation determined by solar alignment at equinox.</div>
+      </div>
+      <div class="archive-item">
+        <div class="item-num">002</div>
+        <div class="item-title">Complex Two</div>
+        <div class="item-year">1974 — Ongoing</div>
+        <div class="item-desc">Concrete and stone. A passage that narrows. The architecture of threshold — entry and enclosure made monumental.</div>
+      </div>
+      <div class="archive-item">
+        <div class="item-num">003</div>
+        <div class="item-title">Complex Three</div>
+        <div class="item-year">1976 — Ongoing</div>
+        <div class="item-desc">Cut into the alluvial plain. The negative space as form. The removed earth is the sculpture.</div>
+      </div>
+      <div class="archive-item">
+        <div class="item-num">004</div>
+        <div class="item-title">Complex Four</div>
+        <div class="item-year">1981 — Ongoing</div>
+        <div class="item-desc">Lateral berms extending from a central axis. Shadow as measurement. Time recorded through movement of light across raw surfaces.</div>
+      </div>
+      <div class="archive-item">
+        <div class="item-num">005</div>
+        <div class="item-title">Complex Five</div>
+        <div class="item-year">1989 — Ongoing</div>
+        <div class="item-desc">A crater and a mound. Inversion as language. The earth displaced above and below the plane of the desert floor.</div>
+      </div>
+      <div class="archive-item">
+        <div class="item-num">006</div>
+        <div class="item-title">Complex Six</div>
+        <div class="item-year">1994 — Ongoing</div>
+        <div class="item-desc">The final complex. Five decades of accumulation. A city with no inhabitants, no commerce — only mass, geometry, and duration.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MONUMENT STRIP -->
+<div class="monument">
+  <div class="monument-inner">
+    <div class="monument-left">
+      <div class="monument-quote">
+        "I am interested in making a work of art that has the same relationship with the landscape as ancient works."
+      </div>
+      <div class="monument-attr">Michael Heizer — 1972</div>
+    </div>
+    <div class="monument-divider"></div>
+    <div class="monument-right">
+      <div class="monument-coords">
+        <span>SITE — Garden Valley, Nevada</span>
+        <span>LAT — 37.2041° N</span>
+        <span>LONG — 115.8015° W</span>
+        <span>MATERIAL — Earth, concrete, steel, granite</span>
+        <span>AREA — 1.5 square miles</span>
+        <span>STATUS — Under construction since 1972</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">About this Archive</div>
+    <div class="about-grid">
+      <div class="about-left">
+        <h2 class="about-title">Mass &amp;<br>Silence</h2>
+        <div class="about-body">
+          <p>Dustarchive is a documentation project focused on monumental earthworks — structures that exist in relationship with geological time rather than human time.</p>
+          <p>We record works that resist the gallery, the museum, the white cube. Works that require travel, endurance, and encounter with scale that cannot be reproduced.</p>
+          <p>The desert is not a backdrop. It is a medium. Dust is not absence — it is accumulation.</p>
+        </div>
+      </div>
+      <div class="about-right">
+        <div class="stat-block">
+          <div class="stat-item">
+            <div class="stat-n">52</div>
+            <div class="stat-l">Years of construction</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-n">6</div>
+            <div class="stat-l">Major complexes</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-n">40M</div>
+            <div class="stat-l">Pounds of earth moved</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-n">∞</div>
+            <div class="stat-l">Duration intended</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-left">Dustarchive</div>
+  <div class="footer-right">
+    <span>Nevada Basin — United States</span><br>
+    <span>Archive open by appointment</span><br>
+    <span style="color:#4a3f34">© 2025</span>
+  </div>
+</footer>
+
+</body>
+</html>
