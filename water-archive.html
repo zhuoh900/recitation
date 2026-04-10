@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WATER RESOURCE AUTHORITY — CIVIC ARCHIVE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,900;1,300;1,400&family=Share+Tech+Mono&family=Barlow:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #141210;
+    --surface: #1D1A16;
+    --surface-2: #252018;
+    --border: #3A3228;
+    --border-light: #4A4035;
+    --text: #DDD0B8;
+    --text-muted: #7A6E5E;
+    --text-dim: #4A4235;
+    --gold: #C4A05C;
+    --gold-dim: #7A6030;
+    --red: #8B2020;
+    --red-light: #B33030;
+    --red-dim: #3A1010;
+    --green: #1E5030;
+    --green-light: #2A7045;
+    --green-dim: #0D2015;
+    --amber: #8B6018;
+    --amber-light: #C48828;
+    --sand: #C8B898;
+    --font-head: 'Barlow Condensed', sans-serif;
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-body: 'Barlow', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 56px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-wordmark {
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .header-access {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .access-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border: 1px solid;
+  }
+
+  .badge-authorized {
+    border-color: var(--green-light);
+    color: var(--green-light);
+    background: var(--green-dim);
+  }
+
+  .badge-id {
+    border-color: var(--border-light);
+    color: var(--text-muted);
+  }
+
+  .header-main {
+    padding: 1.5rem 2rem 1.2rem;
+  }
+
+  .site-title {
+    font-family: var(--font-head);
+    font-size: clamp(42px, 7vw, 80px);
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    line-height: 0.9;
+    text-transform: uppercase;
+    color: var(--sand);
+  }
+
+  .site-title span {
+    display: block;
+    font-size: clamp(13px, 2vw, 18px);
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    gap: 0;
+    border-top: 1px solid var(--border);
+    overflow-x: auto;
+  }
+
+  nav a {
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--text-muted);
+    padding: 10px 20px;
+    border-right: 1px solid var(--border);
+    white-space: nowrap;
+    transition: color 0.15s, background 0.15s;
+    cursor: pointer;
+  }
+
+  nav a:hover, nav a.active {
+    color: var(--sand);
+    background: var(--surface);
+  }
+
+  nav a.restricted {
+    color: var(--red);
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .grid-main {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 0;
+    min-height: calc(100vh - 200px);
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    border-right: 1px solid var(--border);
+    padding: 2rem 0;
+    position: sticky;
+    top: 0;
+    height: fit-content;
+  }
+
+  .sidebar-section {
+    margin-bottom: 2rem;
+  }
+
+  .sidebar-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    padding: 0 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 1.5rem;
+    font-family: var(--font-head);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+  }
+
+  .sidebar-item:hover {
+    color: var(--text);
+    border-left-color: var(--gold-dim);
+    background: var(--surface);
+  }
+
+  .sidebar-item.active {
+    color: var(--gold);
+    border-left-color: var(--gold);
+    background: var(--surface);
+  }
+
+  .sidebar-item.restricted-item {
+    color: var(--red);
+    opacity: 0.7;
+  }
+
+  .sidebar-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.5;
+  }
+
+  .sidebar-hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1rem 1.5rem;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main-content {
+    padding: 2rem 2.5rem;
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-title {
+    font-family: var(--font-head);
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--sand);
+    line-height: 1;
+  }
+
+  .section-code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  /* ── STAT ROW ── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin-bottom: 2rem;
+  }
+
+  .stat-cell {
+    background: var(--surface);
+    padding: 1.2rem 1.5rem;
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: var(--font-head);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    color: var(--text);
+  }
+
+  .stat-value.critical { color: var(--red-light); }
+  .stat-value.warning { color: var(--amber-light); }
+  .stat-value.stable { color: var(--green-light); }
+
+  .stat-sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* ── DATA TABLE ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    font-size: 13px;
+  }
+
+  .data-table thead tr {
+    background: var(--surface-2);
+    border-bottom: 2px solid var(--border-light);
+  }
+
+  .data-table th {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 400;
+  }
+
+  .data-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+
+  .data-table tbody tr:hover {
+    background: var(--surface);
+  }
+
+  .data-table td {
+    padding: 10px 14px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text);
+    vertical-align: middle;
+  }
+
+  .data-table td:first-child {
+    font-family: var(--font-head);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--sand);
+  }
+
+  .status-pill {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid;
+  }
+
+  .status-open { border-color: var(--green-light); color: var(--green-light); }
+  .status-restricted { border-color: var(--amber-light); color: var(--amber-light); }
+  .status-sealed { border-color: var(--red-light); color: var(--red-light); background: var(--red-dim); }
+  .status-depleted { border-color: var(--text-dim); color: var(--text-muted); }
+
+  /* ── RECORD CARD ── */
+  .record-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    margin-bottom: 2rem;
+  }
+
+  .record-card {
+    background: var(--surface);
+    padding: 1.5rem;
+  }
+
+  .record-card-title {
+    font-family: var(--font-head);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .record-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .record-key {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    flex-shrink: 0;
+    padding-right: 1rem;
+  }
+
+  .record-val {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text);
+    text-align: right;
+  }
+
+  .record-val.critical { color: var(--red-light); }
+  .record-val.amber { color: var(--amber-light); }
+  .record-val.green { color: var(--green-light); }
+
+  /* ── RESTRICTED BLOCK ── */
+  .restricted-block {
+    border: 1px solid var(--red);
+    background: var(--red-dim);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .restricted-block::before {
+    content: 'RESTRICTED ACCESS';
+    position: absolute;
+    top: -1px;
+    right: 1rem;
+    background: var(--red);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    padding: 2px 8px;
+  }
+
+  .restricted-text {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--red-light);
+    line-height: 1.8;
+  }
+
+  .restricted-text strong {
+    font-weight: 400;
+    color: var(--text-muted);
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border-light);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 1.5rem;
+    padding-left: 1rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -1.5rem;
+    top: 6px;
+    width: 5px;
+    height: 5px;
+    background: var(--gold-dim);
+    border: 1px solid var(--gold);
+  }
+
+  .timeline-date {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+
+  .timeline-event {
+    font-family: var(--font-head);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-bottom: 4px;
+  }
+
+  .timeline-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ── BAR CHART ── */
+  .bar-chart {
+    margin-bottom: 2rem;
+  }
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 8px;
+  }
+
+  .bar-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    width: 140px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 18px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    background: var(--gold-dim);
+    position: relative;
+    transition: width 1s ease;
+  }
+
+  .bar-fill.critical { background: var(--red); opacity: 0.8; }
+  .bar-fill.warning { background: var(--amber); opacity: 0.8; }
+  .bar-fill.good { background: var(--green); opacity: 0.8; }
+
+  .bar-val {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    width: 60px;
+    flex-shrink: 0;
+  }
+
+  /* ── DECREE / NOTICE ── */
+  .decree-block {
+    border: 1px solid var(--border-light);
+    background: var(--surface-2);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .decree-header {
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .decree-body {
+    font-family: var(--font-head);
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1.4;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+
+  .decree-ref {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── SUBSECTION LABEL ── */
+  .subsection-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .subsection-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4rem;
+  }
+
+  .footer-text {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── TICKER ── */
+  .ticker {
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    height: 32px;
+    display: flex;
+    align-items: center;
+  }
+
+  .ticker-track {
+    display: flex;
+    gap: 4rem;
+    animation: scroll 40s linear infinite;
+    white-space: nowrap;
+  }
+
+  .ticker-item {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .ticker-item span {
+    color: var(--gold);
+    margin-left: 0.5rem;
+  }
+
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── TOOLTIP-STYLE CALLOUT ── */
+  .callout {
+    display: flex;
+    gap: 1rem;
+    background: var(--surface);
+    border-left: 3px solid var(--gold-dim);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .callout-icon {
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    flex-shrink: 0;
+    padding-top: 1px;
+  }
+
+  .callout-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .grid-main { grid-template-columns: 1fr; }
+    .sidebar { position: static; border-right: none; border-bottom: 1px solid var(--border); }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+    .record-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item">RESERVOIR A-7 LEVEL<span>31.4%</span></span>
+    <span class="ticker-item">DAILY ALLOCATION — DISTRICT II<span>NOMINAL</span></span>
+    <span class="ticker-item">LOWER ARCHIVE — ACCESS<span>SEALED</span></span>
+    <span class="ticker-item">CONDENSATION YIELD 04.06.26<span>↓ 12% vs. PRIOR CYCLE</span></span>
+    <span class="ticker-item">DISTRICT I CIVIC CORE — DISTRIBUTION<span>AUTHORIZED</span></span>
+    <span class="ticker-item">SAND FILTRATION UNIT 3<span>MAINTENANCE</span></span>
+    <span class="ticker-item">NEXT RATIONING REVIEW<span>CYCLE 18</span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item">RESERVOIR A-7 LEVEL<span>31.4%</span></span>
+    <span class="ticker-item">DAILY ALLOCATION — DISTRICT II<span>NOMINAL</span></span>
+    <span class="ticker-item">LOWER ARCHIVE — ACCESS<span>SEALED</span></span>
+    <span class="ticker-item">CONDENSATION YIELD 04.06.26<span>↓ 12% vs. PRIOR CYCLE</span></span>
+    <span class="ticker-item">DISTRICT I CIVIC CORE — DISTRIBUTION<span>AUTHORIZED</span></span>
+    <span class="ticker-item">SAND FILTRATION UNIT 3<span>MAINTENANCE</span></span>
+    <span class="ticker-item">NEXT RATIONING REVIEW<span>CYCLE 18</span></span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-top">
+    <span class="header-wordmark">Water Resource Authority · Civic Archive · Bureau of Distribution &amp; Control</span>
+    <div class="header-access">
+      <span class="access-badge badge-id">PSS–900–14B</span>
+      <span class="access-badge badge-authorized">Class B — Authorized</span>
+    </div>
+  </div>
+  <div class="header-main container">
+    <h1 class="site-title">
+      <span>Bureau of Water Control</span>
+      Civic Archive
+    </h1>
+  </div>
+  <nav>
+    <a class="active" href="#reserves">Reserves</a>
+    <a href="#allocation">Allocation</a>
+    <a href="#infrastructure">Infrastructure</a>
+    <a href="#districts">Districts</a>
+    <a href="#history">History</a>
+    <a href="#protocols">Protocols</a>
+    <a class="restricted" href="#restricted">⬛ Restricted</a>
+  </nav>
+</header>
+
+<!-- BODY -->
+<div class="container">
+  <div class="grid-main">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <p class="sidebar-label">System Status</p>
+        <div class="sidebar-item">
+          <span>Current Cycle</span><span>18</span>
+        </div>
+        <div class="sidebar-item">
+          <span>Day Count</span><span>04.06.26</span>
+        </div>
+        <div class="sidebar-item active">
+          <span>Archive Rev.</span><span>3.4</span>
+        </div>
+      </div>
+
+      <hr class="sidebar-hr">
+
+      <div class="sidebar-section">
+        <p class="sidebar-label">Sections</p>
+        <div class="sidebar-item active">
+          <span>Water Reserves</span>
+          <span class="sidebar-dot"></span>
+        </div>
+        <div class="sidebar-item">
+          <span>Allocation Log</span>
+          <span class="sidebar-dot"></span>
+        </div>
+        <div class="sidebar-item">
+          <span>Infrastructure</span>
+          <span class="sidebar-dot"></span>
+        </div>
+        <div class="sidebar-item">
+          <span>District Map</span>
+          <span class="sidebar-dot"></span>
+        </div>
+        <div class="sidebar-item">
+          <span>History</span>
+          <span class="sidebar-dot"></span>
+        </div>
+      </div>
+
+      <hr class="sidebar-hr">
+
+      <div class="sidebar-section">
+        <p class="sidebar-label">Clearance</p>
+        <div class="sidebar-item">Class A — Civic Core</div>
+        <div class="sidebar-item active">Class B — Transit Axis</div>
+        <div class="sidebar-item" style="opacity:0.4">Class C — Outer Perimeter</div>
+        <div class="sidebar-item restricted-item">
+          <span>Archive — Sealed</span>
+        </div>
+      </div>
+
+      <hr class="sidebar-hr">
+
+      <div class="sidebar-section">
+        <p class="sidebar-label">Your Record</p>
+        <div class="sidebar-item">
+          <span>Hang</span>
+          <span class="sidebar-dot" style="background:var(--green-light)"></span>
+        </div>
+        <div class="sidebar-item" style="font-size:11px; color:var(--text-dim)">
+          District II · PSS-900-14B
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+      <!-- RESERVES -->
+      <section id="reserves">
+        <div class="section-header">
+          <h2 class="section-title">Water Reserves</h2>
+          <span class="section-code">// WRA-RES-CY18</span>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat-cell">
+            <p class="stat-label">Total Reserve Volume</p>
+            <p class="stat-value warning">31.4%</p>
+            <p class="stat-sub">↓ 4.1% from Cycle 17</p>
+          </div>
+          <div class="stat-cell">
+            <p class="stat-label">Daily Condensation Yield</p>
+            <p class="stat-value">8,200 L</p>
+            <p class="stat-sub">All collection arrays</p>
+          </div>
+          <div class="stat-cell">
+            <p class="stat-label">Reclamation Output</p>
+            <p class="stat-value stable">14,700 L</p>
+            <p class="stat-sub">Processing Units 1–4</p>
+          </div>
+          <div class="stat-cell">
+            <p class="stat-label">Projected Depletion</p>
+            <p class="stat-value critical">Cycle 41</p>
+            <p class="stat-sub">At current consumption</p>
+          </div>
+        </div>
+
+        <div class="subsection-label">Reservoir Inventory — Cycle 18</div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Reservoir</th>
+              <th>Location</th>
+              <th>Capacity (kL)</th>
+              <th>Current Level</th>
+              <th>Rate of Loss</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A-7 Primary</td>
+              <td>Sub-level 3, Core</td>
+              <td>120,000</td>
+              <td>31.4%</td>
+              <td>−0.8%/day</td>
+              <td><span class="status-pill status-restricted">Monitored</span></td>
+            </tr>
+            <tr>
+              <td>B-2 Secondary</td>
+              <td>Outer Ring, North</td>
+              <td>48,000</td>
+              <td>54.1%</td>
+              <td>−0.4%/day</td>
+              <td><span class="status-pill status-open">Active</span></td>
+            </tr>
+            <tr>
+              <td>C-1 Emergency</td>
+              <td>Sealed — Sub-level 5</td>
+              <td>25,000</td>
+              <td>87.0%</td>
+              <td>Locked</td>
+              <td><span class="status-pill status-sealed">Sealed</span></td>
+            </tr>
+            <tr>
+              <td>D-4 Surface Collect.</td>
+              <td>Roof Array, Sector 9</td>
+              <td>3,200</td>
+              <td>12.8%</td>
+              <td>+0.3%/day</td>
+              <td><span class="status-pill status-open">Filling</span></td>
+            </tr>
+            <tr>
+              <td>F-0 Fossil Well</td>
+              <td>Deep Bore, Perimeter</td>
+              <td>—</td>
+              <td>Unknown</td>
+              <td>—</td>
+              <td><span class="status-pill status-depleted">Depleted</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="subsection-label">Reserve Levels by District — Current Cycle</div>
+
+        <div class="bar-chart">
+          <div class="bar-row">
+            <span class="bar-label">District I — Core</span>
+            <div class="bar-track"><div class="bar-fill good" style="width:71%"></div></div>
+            <span class="bar-val">71.0%</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">District II — Transit</span>
+            <div class="bar-track"><div class="bar-fill warning" style="width:44%"></div></div>
+            <span class="bar-val">44.2%</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">District III — Labor</span>
+            <div class="bar-track"><div class="bar-fill critical" style="width:18%"></div></div>
+            <span class="bar-val">18.3%</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">District IV — Perimeter</span>
+            <div class="bar-track"><div class="bar-fill critical" style="width:11%"></div></div>
+            <span class="bar-val">11.0%</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Archive Level</span>
+            <div class="bar-track" style="opacity:0.4"><div class="bar-fill" style="width:100%"></div></div>
+            <span class="bar-val" style="color:var(--text-dim)">—</span>
+          </div>
+        </div>
+
+        <div class="restricted-block">
+          The following data — including fossil aquifer depth surveys, emergency reserve exact volumes,
+          and sub-level infrastructure schematics — is sealed under Archive Order 07.
+          Clearance Class A or above required. Unauthorized access attempts are logged and prosecuted.
+          <div style="margin-top:0.75rem; font-family:var(--font-mono); font-size:9px; color:var(--text-dim)">
+            REF: ARCHIVE ORDER 07 · WRA DECREE 09-C · SEALED CYCLE 04
+          </div>
+        </div>
+      </section>
+
+      <!-- ALLOCATION -->
+      <section id="allocation" style="margin-top:3rem">
+        <div class="section-header">
+          <h2 class="section-title">Allocation</h2>
+          <span class="section-code">// WRA-ALLOC-CY18</span>
+        </div>
+
+        <div class="decree-block">
+          <div class="decree-header">
+            <span>Water Rationing Decree</span>
+            <span>Cycle 18 · Ref: WRA-009</span>
+          </div>
+          <p class="decree-body">
+            Effective Cycle 18, daily water entitlement for Class B registered units is set at
+            <strong style="color:var(--gold); font-weight:700">4.2 liters</strong> per individual.
+            Supplemental access to Condensation Collection Points is subject to queue-based priority
+            determined by district classification and labor status.
+          </p>
+          <div class="decree-ref">
+            Issued by: Bureau of Water Control · Counter-signed: Civic Authority, District Command ·
+            Override authority: Class A only
+          </div>
+        </div>
+
+        <div class="record-grid">
+          <div class="record-card">
+            <p class="record-card-title">Daily Entitlement — Class B</p>
+            <div class="record-row">
+              <span class="record-key">Drinking</span>
+              <span class="record-val green">2.0 L</span>
+            </div>
+            <div class="record-row">
+              <span class="record-key">Sanitation</span>
+              <span class="record-val">1.5 L</span>
+            </div>
+            <div class="record-row">
+              <span class="record-key">Food Prep</span>
+              <span class="record-val">0.7 L</span>
+            </div>
+            <div class="record-row">
+              <span class="record-key">Supplemental</span>
+              <span class="record-val amber">Conditional</span>
+            </div>
+            <div class="record-row">
+              <span class="record-key">Total Minimum</span>
+              <span class="record-val" style="font-weight:700">4.2 L</span>
+            </div>
+          </div>
+
+          <div class="record-card">
+            <p class="record-card-title">Class Comparison</p>
+            <div class="record-row">
+              <span class="record-key">Class A — Civic Core</span>
+              <span class="record-val green">12.0 L</span>
+            </div>
+            <div class="record-row">
+              <span class="record-key">Class B — Transit</span>
+              <span class="record-val amber">4.2 L</span>
+            </div>
+            <div class="record-row">
+              <span class="record-key">Class C — Perimeter</span>
+              <span class="record-val critical">2.8 L</span>
+            </div>
+            <div class="record-row">
+              <span class="record-key">Unregistered</span>
+              <span class="record-val critical">0 — Denied</span>
+            </div>
+            <div class="record-row">
+              <span class="record-key">Archive Personnel</span>
+              <span class="record-val" style="color:var(--text-dim)">Classified</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout">
+          <span class="callout-icon">NOTE</span>
+          <span class="callout-text">
+            Collection Points 4, 7, and 11 are temporarily suspended for maintenance during Cycle 18.
+            Class B units in Sub-Sector 9 are redirected to Collection Point 2. Present your Identity
+            Plate upon access. Queue violations are subject to Decree WRA-004.
+          </span>
+        </div>
+      </section>
+
+      <!-- HISTORY -->
+      <section id="history" style="margin-top:3rem">
+        <div class="section-header">
+          <h2 class="section-title">Historical Record</h2>
+          <span class="section-code">// WRA-HIST</span>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <p class="timeline-date">Pre-Archive · Before Cycle 1</p>
+            <p class="timeline-event">The Great Subsidence</p>
+            <p class="timeline-desc">
+              Surface water bodies cease to exist. The last river is recorded in the Archive.
+              Fossil aquifer exploitation begins. Population consolidation orders issued.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <p class="timeline-date">Cycle 1 — Year of Foundation</p>
+            <p class="timeline-event">Establishment of the Water Authority</p>
+            <p class="timeline-desc">
+              The Bureau of Water Control formalizes. District classification system enacted.
+              Identity Plate mandate issued. Collection infrastructure begins construction.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <p class="timeline-date">Cycle 4</p>
+            <p class="timeline-event">Archive Order 07 — Sealing of the Lower Archive</p>
+            <p class="timeline-desc">
+              Records pertaining to pre-subsidence hydrology, aquifer surveys, and emergency
+              reserve schematics sealed under Class A authority. All prior copies recalled.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <p class="timeline-date">Cycle 9</p>
+            <p class="timeline-event">Condensation Array Program — Phase I</p>
+            <p class="timeline-desc">
+              Roof-mounted collection arrays deployed across Districts I and II.
+              Combined yield: 3,200 L/day. Phase II expansion pending resource authorization.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <p class="timeline-date">Cycle 14</p>
+            <p class="timeline-event">District IV Ration Reduction — Decree WRA-009</p>
+            <p class="timeline-desc">
+              Outer Perimeter class reduced from 4.0 L to 2.8 L following reservoir A-7
+              decline below 50% threshold. Civil unrest recorded. Three individuals exiled.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <p class="timeline-date">Cycle 18 — Present</p>
+            <p class="timeline-event">Fossil Well F-0 — Confirmed Depletion</p>
+            <p class="timeline-desc">
+              The final deep-bore fossil well confirms zero yield. Authority projections
+              classify this as a Tier 1 critical event. Emergency reserve C-1 remains sealed.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer container">
+  <span class="footer-text">Water Resource Authority · Bureau of Distribution &amp; Control · Civic Archive Rev. 3.4</span>
+  <span class="footer-text">Unauthorized reproduction of this record is prohibited under Decree WRA-002 · Class B Access</span>
+</footer>
+
+</body>
+</html>
