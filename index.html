@@ -3,363 +3,456 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DUSTARCHIVE</title>
+<title>DUSTARCHIVE — DISTRICT II REGISTRY</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --dust:    #D4C5A9;
-    --sand:    #BFB097;
-    --ochre:   #A8854A;
-    --raw:     #8C7355;
-    --shadow:  #3D3128;
-    --void:    #1E1710;
-    --concrete:#6B6258;
-    --bone:    #E8DFD0;
-    --burn:    #7A4F2D;
+    --linen:    #D9D0BF;
+    --parchment:#E6DFD0;
+    --fog:      #C4BAA8;
+    --plate:    #CECABD;
+    --bar:      #3A3330;
+    --ink:      #2E2A27;
+    --mid:      #6B6055;
+    --faint:    #A09488;
+    --open:     #7A8C70;
+    --denied:   #8C5F5A;
+    --line:     #BBB3A4;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
 
   body {
-    background: var(--void);
-    color: var(--dust);
+    background: var(--parchment);
+    color: var(--ink);
     font-family: 'Space Mono', monospace;
-    font-size: 13px;
+    font-size: 11px;
     line-height: 1.6;
-    cursor: crosshair;
+    cursor: default;
   }
 
-  /* grain overlay */
+  /* grain */
   body::before {
     content: '';
     position: fixed; inset: 0; z-index: 999;
     pointer-events: none;
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    background-repeat: repeat;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     background-size: 128px;
   }
 
-  /* ── NAV ── */
+  /* ── NAV / HEADER BAR ── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--bar);
     display: flex; justify-content: space-between; align-items: center;
-    padding: 20px 48px;
-    border-bottom: 1px solid var(--shadow);
-    background: rgba(30,23,16,0.92);
-    backdrop-filter: blur(2px);
+    padding: 0 48px;
+    height: 44px;
   }
 
   .nav-logo {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 18px; font-weight: 800;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--bone);
+    font-size: 14px; font-weight: 800;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--linen);
+  }
+
+  .nav-right {
+    display: flex; align-items: center; gap: 40px;
   }
 
   .nav-links {
-    display: flex; gap: 40px;
+    display: flex; gap: 32px;
   }
 
   .nav-links a {
     font-family: 'Space Mono', monospace;
-    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--concrete); text-decoration: none;
-    transition: color 0.2s;
+    font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--fog); text-decoration: none;
+    transition: color 0.15s;
   }
-  .nav-links a:hover { color: var(--dust); }
+  .nav-links a:hover { color: var(--linen); }
+
+  .nav-status {
+    font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--open);
+    padding-left: 32px;
+    border-left: 1px solid #5a5048;
+  }
 
   /* ── HERO ── */
   .hero {
+    padding-top: 44px;
     min-height: 100vh;
-    display: grid;
-    grid-template-rows: 1fr auto;
-    padding: 0;
+    display: flex; flex-direction: column;
     position: relative;
-    overflow: hidden;
   }
 
-  /* geometric desert shapes in background */
-  .hero-geo {
-    position: absolute; inset: 0; pointer-events: none;
+  /* top info strip */
+  .hero-strip {
+    background: var(--linen);
+    border-bottom: 1px solid var(--line);
+    padding: 14px 48px;
+    display: flex; justify-content: space-between; align-items: center;
   }
 
-  .geo-block {
-    position: absolute;
-    background: var(--shadow);
+  .strip-code {
+    font-size: 9px; letter-spacing: 0.2em; color: var(--mid);
+    text-transform: uppercase;
   }
 
-  .geo-1 { width: 340px; height: 340px; bottom: 0; right: 80px; }
-  .geo-2 { width: 180px; height: 560px; bottom: 0; right: 420px; background: var(--void); border-left: 1px solid var(--shadow); }
-  .geo-3 { width: 60px; height: 180px; top: 30%; left: 0; background: var(--shadow); }
-  .geo-4 { width: 1px; height: 100%; top: 0; left: 48%; background: var(--shadow); }
-  .geo-5 { width: 100%; height: 1px; top: 72%; left: 0; background: var(--shadow); }
-
-  .hero-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 120px 48px 80px;
-    position: relative; z-index: 2;
+  .strip-status {
+    font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--open);
   }
 
-  .hero-coord {
-    font-size: 10px; letter-spacing: 0.2em; color: var(--concrete);
-    margin-bottom: 32px;
+  /* main hero body */
+  .hero-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .hero-left {
+    padding: 80px 48px 80px;
+    border-right: 1px solid var(--line);
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+
+  .hero-eyebrow {
+    font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--mid); margin-bottom: 40px;
   }
 
   .hero-title {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(80px, 14vw, 180px);
-    font-weight: 800;
-    line-height: 0.88;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
-    color: var(--bone);
-    margin-bottom: 40px;
-    max-width: 800px;
+    font-size: clamp(72px, 11vw, 148px);
+    font-weight: 800; line-height: 0.88;
+    letter-spacing: -0.01em; text-transform: uppercase;
+    color: var(--ink);
   }
 
-  .hero-title span {
-    display: block;
-    color: var(--ochre);
-  }
-
-  .hero-sub {
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 60px;
-    align-items: end;
-    border-top: 1px solid var(--shadow);
-    padding-top: 32px;
-  }
-
-  .hero-desc {
-    font-size: 12px; line-height: 1.8; color: var(--concrete);
-    max-width: 280px;
-  }
-
-  .hero-meta {
-    display: flex; gap: 48px;
-  }
-
-  .meta-item { }
-  .meta-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--raw); margin-bottom: 4px; }
-  .meta-val { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; color: var(--dust); letter-spacing: 0.05em; }
-
-  /* ── SECTIONS ── */
-  section {
-    border-top: 1px solid var(--shadow);
-  }
-
-  .section-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 80px 48px;
-  }
-
-  .section-label {
-    font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase;
-    color: var(--raw); margin-bottom: 48px;
-    display: flex; align-items: center; gap: 16px;
-  }
-  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--shadow); }
-
-  /* ── ARCHIVE GRID ── */
-  .archive-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--shadow);
-    border: 1px solid var(--shadow);
-  }
-
-  .archive-item {
-    background: var(--void);
-    padding: 40px 32px;
-    transition: background 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .archive-item::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px; height: 0;
-    background: var(--ochre);
-    transition: height 0.3s;
-  }
-
-  .archive-item:hover { background: #231c13; }
-  .archive-item:hover::before { height: 100%; }
-
-  .item-num {
-    font-size: 10px; letter-spacing: 0.15em; color: var(--shadow);
-    margin-bottom: 24px;
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
-  }
-
-  .item-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 28px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.03em; color: var(--dust);
-    margin-bottom: 12px; line-height: 1.1;
-  }
-
-  .item-year {
-    font-size: 10px; letter-spacing: 0.1em; color: var(--raw);
-    margin-bottom: 16px;
-  }
-
-  .item-desc {
-    font-size: 11px; color: var(--concrete); line-height: 1.7;
-  }
-
-  /* ── MONUMENT STRIP ── */
-  .monument {
-    background: var(--shadow);
-    padding: 0 48px;
-    overflow: hidden;
-    border-top: 1px solid #3d3128;
-    border-bottom: 1px solid #3d3128;
-  }
-
-  .monument-inner {
-    max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: 1fr 2px 1fr;
-    gap: 0;
-  }
-
-  .monument-divider { background: var(--raw); }
-
-  .monument-left, .monument-right {
-    padding: 80px 60px 80px 0;
-  }
-  .monument-right { padding: 80px 0 80px 60px; }
-
-  .monument-quote {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(28px, 4vw, 52px);
+  .hero-title .sub {
     font-weight: 300;
-    line-height: 1.15;
-    color: var(--dust);
-    letter-spacing: -0.01em;
-    margin-bottom: 24px;
+    color: var(--mid);
   }
 
-  .monument-attr {
-    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--raw);
+  .hero-bottom {
+    border-top: 1px solid var(--line);
+    padding-top: 28px;
+    display: flex; gap: 60px;
   }
 
-  .monument-coords {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px; color: var(--concrete);
-    line-height: 2.2;
-  }
-
-  .monument-coords span { display: block; }
-
-  /* ── ABOUT ── */
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: start;
-  }
-
-  .about-title {
+  .meta-item {}
+  .meta-label { font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--faint); margin-bottom: 4px; }
+  .meta-val {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 64px; font-weight: 800; text-transform: uppercase;
-    line-height: 0.9; color: var(--bone); margin-bottom: 32px;
-    letter-spacing: -0.02em;
+    font-size: 20px; font-weight: 700; letter-spacing: 0.05em;
+    color: var(--ink);
   }
 
-  .about-body {
-    font-size: 12px; line-height: 2; color: var(--concrete);
+  /* hero right — ID panel */
+  .hero-right {
+    padding: 40px 32px;
+    background: var(--linen);
+    display: flex; flex-direction: column; gap: 0;
   }
 
-  .about-body p { margin-bottom: 20px; }
-
-  .about-right {
-    padding-top: 8px;
-  }
-
-  .stat-block {
-    border-top: 1px solid var(--shadow);
-    padding: 24px 0;
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-
-  .stat-item { }
-  .stat-n {
+  .id-header {
+    background: var(--bar);
+    color: var(--linen);
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 48px; font-weight: 700; line-height: 1;
-    color: var(--ochre); letter-spacing: -0.02em;
-  }
-  .stat-l { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--raw); margin-top: 6px; }
-
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid var(--shadow);
-    padding: 40px 48px;
-    display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px; font-weight: 800;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    padding: 8px 12px;
+    margin: -40px -32px 28px;
   }
 
-  .footer-left {
+  .id-field { margin-bottom: 20px; }
+  .id-label { font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); margin-bottom: 3px; }
+  .id-val {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 24px; font-weight: 800; letter-spacing: 0.15em;
-    text-transform: uppercase; color: var(--shadow);
+    font-size: 14px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink);
+  }
+  .id-val.large {
+    font-size: 40px; letter-spacing: 0.03em; line-height: 1;
   }
 
-  .footer-right {
-    font-size: 10px; letter-spacing: 0.15em; color: var(--shadow);
-    text-align: right; line-height: 1.8;
+  .id-divider {
+    height: 1px; background: var(--line);
+    margin: 16px 0;
+  }
+
+  .id-row {
+    display: flex; gap: 32px; margin-bottom: 20px;
+  }
+
+  .id-zone-header {
+    background: var(--bar);
+    color: var(--linen);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; font-weight: 800;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    padding: 6px 12px;
+    margin: 8px -32px 12px;
+  }
+
+  .zone-entry {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .zone-name { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); }
+  .zone-sub { font-size: 8px; color: var(--faint); margin-top: 1px; }
+  .zone-access { font-size: 9px; letter-spacing: 0.15em; font-weight: 700; text-transform: uppercase; }
+  .zone-access.open { color: var(--open); }
+  .zone-access.denied { color: var(--denied); }
+
+  .id-barcode {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .barcode-line {
+    display: flex; gap: 1px; height: 28px; margin-bottom: 6px;
+  }
+  .barcode-line span {
+    background: var(--ink);
+    flex-shrink: 0;
+  }
+  .barcode-text {
+    font-size: 8px; letter-spacing: 0.1em; color: var(--faint); text-transform: uppercase;
   }
 
   /* ── TICKER ── */
   .ticker {
-    background: var(--ochre);
-    padding: 10px 0;
-    overflow: hidden;
+    background: var(--bar);
+    padding: 8px 0;
+    overflow: hidden; white-space: nowrap;
+  }
+  .ticker-inner {
+    display: inline-flex;
+    animation: ticker 30s linear infinite;
+  }
+  .ticker-item {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--fog);
+    padding: 0 28px;
+  }
+  .ticker-sep { color: #5a5048; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── SHARED SECTION STYLES ── */
+  .sec-bar {
+    background: var(--bar);
+    color: var(--linen);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 800; letter-spacing: 0.25em; text-transform: uppercase;
+    padding: 8px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .sec-bar span {
+    font-weight: 400; color: var(--faint); font-size: 9px; letter-spacing: 0.18em;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* ── ARCHIVE SECTION ── */
+  #archive { border-top: 1px solid var(--line); }
+
+  .archive-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .archive-table thead tr {
+    background: var(--linen);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .archive-table th {
+    font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--faint); font-weight: 400;
+    padding: 12px 48px;
+    text-align: left;
+  }
+
+  .archive-table th:last-child { text-align: right; }
+
+  .archive-table tbody tr {
+    border-bottom: 1px solid var(--line);
+    transition: background 0.15s;
+  }
+  .archive-table tbody tr:hover { background: var(--linen); }
+
+  .archive-table td {
+    padding: 22px 48px;
+    vertical-align: top;
+  }
+
+  .td-code {
+    font-size: 9px; letter-spacing: 0.15em; color: var(--faint);
+    white-space: nowrap; width: 120px;
+  }
+
+  .td-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.04em; color: var(--ink);
+    line-height: 1.1;
+  }
+  .td-sub {
+    font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--faint); margin-top: 4px;
+  }
+
+  .td-desc {
+    font-size: 10px; color: var(--mid); line-height: 1.7;
+    max-width: 360px;
+  }
+
+  .td-period {
+    font-size: 9px; letter-spacing: 0.12em; color: var(--mid);
     white-space: nowrap;
   }
 
-  .ticker-inner {
-    display: inline-flex; gap: 0;
-    animation: ticker 25s linear infinite;
+  .td-status {
+    text-align: right; white-space: nowrap;
+  }
+  .status-tag {
+    font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700;
+    padding: 4px 10px;
+    border: 1px solid;
+  }
+  .status-tag.open { color: var(--open); border-color: var(--open); }
+  .status-tag.restricted { color: var(--denied); border-color: var(--denied); }
+  .status-tag.sealed { color: var(--faint); border-color: var(--line); }
+
+  /* ── RECORD PANEL ── */
+  .record-band {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr 1px 1fr;
+    background: var(--linen);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
   }
 
-  .ticker-item {
+  .record-divider { background: var(--line); }
+
+  .record-cell {
+    padding: 48px;
+  }
+
+  .record-num {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px; font-weight: 700; letter-spacing: 0.15em;
-    text-transform: uppercase; color: var(--void);
-    padding: 0 32px;
+    font-size: 56px; font-weight: 800; line-height: 1;
+    color: var(--ink); margin-bottom: 8px;
+  }
+  .record-label {
+    font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--faint);
+  }
+  .record-desc {
+    font-size: 10px; color: var(--mid); line-height: 1.8; margin-top: 16px;
+    border-top: 1px solid var(--line); padding-top: 16px;
   }
 
-  .ticker-sep { color: var(--burn); padding: 0 8px; }
+  /* ── ABOUT ── */
+  #about { border-top: 1px solid var(--line); }
 
-  @keyframes ticker {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+  .about-body {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 0;
+  }
+
+  .about-left {
+    padding: 64px 48px;
+    border-right: 1px solid var(--line);
+  }
+
+  .about-heading {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 800; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--faint); margin-bottom: 32px;
+  }
+
+  .about-text {
+    font-size: 11px; line-height: 2; color: var(--mid);
+  }
+  .about-text p { margin-bottom: 20px; }
+
+  .about-right {
+    padding: 64px 48px;
+  }
+
+  .field-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .field-key { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); }
+  .field-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bar);
+    padding: 0 48px;
+  }
+
+  .footer-main {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 28px 0;
+    border-bottom: 1px solid #4a4038;
+  }
+
+  .footer-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px; font-weight: 800; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--linen);
+  }
+
+  .footer-links {
+    display: flex; gap: 32px;
+  }
+  .footer-links a {
+    font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--faint); text-decoration: none;
+  }
+
+  .footer-sub {
+    padding: 16px 0;
+    display: flex; justify-content: space-between;
+    font-size: 9px; letter-spacing: 0.12em; color: #5a5048;
+    text-transform: uppercase;
   }
 
   @media (max-width: 900px) {
-    nav { padding: 16px 24px; }
-    .nav-links { display: none; }
-    .hero-content { padding: 100px 24px 60px; }
-    .hero-sub { grid-template-columns: 1fr; gap: 32px; }
-    .section-inner { padding: 60px 24px; }
-    .archive-grid { grid-template-columns: 1fr; }
-    .about-grid { grid-template-columns: 1fr; gap: 40px; }
-    .monument-inner { grid-template-columns: 1fr; }
-    .monument-divider { display: none; }
-    .monument-left, .monument-right { padding: 48px 0; }
-    footer { flex-direction: column; gap: 20px; text-align: center; padding: 32px 24px; }
-    .geo-block { display: none; }
+    nav { padding: 0 24px; }
+    .nav-links, .nav-status { display: none; }
+    .hero-body { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 48px 24px; }
+    .hero-strip { padding: 12px 24px; }
+    .sec-bar { padding: 8px 24px; }
+    .archive-table th { padding: 12px 24px; }
+    .archive-table td { padding: 18px 24px; }
+    .td-desc, .td-period { display: none; }
+    .record-band { grid-template-columns: 1fr; }
+    .record-divider { display: none; }
+    .record-cell { padding: 32px 24px; border-bottom: 1px solid var(--line); }
+    .about-body { grid-template-columns: 1fr; }
+    .about-left { border-right: none; border-bottom: 1px solid var(--line); padding: 40px 24px; }
+    .about-right { padding: 40px 24px; }
+    footer { padding: 0 24px; }
+    .ticker { display: none; }
   }
 </style>
 </head>
@@ -368,46 +461,170 @@
 <!-- NAV -->
 <nav>
   <div class="nav-logo">Dustarchive</div>
-  <div class="nav-links">
-    <a href="#archive">Archive</a>
-    <a href="#about">About</a>
-    <a href="#contact">Contact</a>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="#archive">Archive</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-status">Registry Open</div>
   </div>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-geo">
-    <div class="geo-block geo-1"></div>
-    <div class="geo-block geo-2"></div>
-    <div class="geo-block geo-3"></div>
-    <div class="geo-block geo-4"></div>
-    <div class="geo-block geo-5"></div>
+
+  <div class="hero-strip">
+    <div class="strip-code">DUST AUTHORITY — DISTRICT II REGISTRY — REF: DA-900-ARCHIVE</div>
+    <div class="strip-status">Status: Authorized Access</div>
   </div>
-  <div class="hero-content">
-    <div class="hero-coord">37°12'N 115°48'W — NEVADA BASIN</div>
-    <h1 class="hero-title">
-      Dust<span>Archive</span>
-    </h1>
-    <div class="hero-sub">
-      <p class="hero-desc">
-        A record of forms cut into earth.<br>
-        Mass without ornament.<br>
-        Time made visible in stone and silence.
-      </p>
-      <div class="hero-meta">
-        <div class="meta-item">
-          <div class="meta-label">Est.</div>
-          <div class="meta-val">1972</div>
+
+  <div class="hero-body">
+
+    <div class="hero-left">
+      <div>
+        <div class="hero-eyebrow">Field Documentation — Nevada Basin — 37°12'N 115°48'W</div>
+        <h1 class="hero-title">
+          Dust<br><span class="sub">Archive</span>
+        </h1>
+      </div>
+      <div>
+        <p style="font-size:11px;color:var(--mid);line-height:2;max-width:480px;margin-bottom:40px;">
+          A record of forms cut into earth.<br>
+          Mass without ornament.<br>
+          Time made visible in stone and silence.<br>
+          The city endures. The city records.
+        </p>
+        <div class="hero-bottom">
+          <div class="meta-item">
+            <div class="meta-label">Est.</div>
+            <div class="meta-val">1972</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Area</div>
+            <div class="meta-val">1.5 mi²</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Elevation</div>
+            <div class="meta-val">5,312 ft</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">District</div>
+            <div class="meta-val">II</div>
+          </div>
         </div>
-        <div class="meta-item">
-          <div class="meta-label">Area</div>
-          <div class="meta-val">1.5 mi²</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL — styled like the ID plate -->
+    <div class="hero-right">
+      <div class="id-header">Identity Plate</div>
+
+      <div class="id-field">
+        <div class="id-label">Registered Name</div>
+        <div class="id-val large">DUSTARCHIVE</div>
+      </div>
+
+      <div class="id-divider"></div>
+
+      <div class="id-field">
+        <div class="id-label">Identification Code</div>
+        <div class="id-val">DA-900-ARCH</div>
+      </div>
+
+      <div class="id-divider"></div>
+
+      <div class="id-row">
+        <div class="id-field">
+          <div class="id-label">District</div>
+          <div class="id-val large">II</div>
         </div>
-        <div class="meta-item">
-          <div class="meta-label">Elevation</div>
-          <div class="meta-val">5,312 ft</div>
+        <div class="id-field">
+          <div class="id-label">Class</div>
+          <div class="id-val large">A</div>
         </div>
+      </div>
+
+      <div class="id-field">
+        <div class="id-label">Status</div>
+        <div class="id-val">Authorized</div>
+      </div>
+
+      <div class="id-field">
+        <div class="id-label">Issue Date</div>
+        <div class="id-val">04.12.26</div>
+      </div>
+
+      <div class="id-zone-header">Zone Access</div>
+
+      <div class="zone-entry">
+        <div>
+          <div class="zone-name">District II</div>
+          <div class="zone-sub">Archive Core</div>
+        </div>
+        <div class="zone-access open">Open</div>
+      </div>
+      <div class="zone-entry">
+        <div>
+          <div class="zone-name">District IV</div>
+          <div class="zone-sub">Transit Perimeter</div>
+        </div>
+        <div class="zone-access open">Open</div>
+      </div>
+      <div class="zone-entry">
+        <div>
+          <div class="zone-name">District I</div>
+          <div class="zone-sub">Civic Core</div>
+        </div>
+        <div class="zone-access denied">Denied</div>
+      </div>
+      <div class="zone-entry">
+        <div>
+          <div class="zone-name">Lower Archive</div>
+          <div class="zone-sub">Sealed Chamber</div>
+        </div>
+        <div class="zone-access denied">Denied</div>
+      </div>
+
+      <div class="id-barcode">
+        <div class="barcode-line">
+          <!-- barcode bars -->
+          <span style="width:2px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:3px"></span><span style="width:2px;background:transparent"></span>
+          <span style="width:1px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:4px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:1px"></span><span style="width:3px;background:transparent"></span>
+          <span style="width:2px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:1px"></span><span style="width:2px;background:transparent"></span>
+          <span style="width:3px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:2px"></span><span style="width:2px;background:transparent"></span>
+          <span style="width:1px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:4px"></span><span style="width:2px;background:transparent"></span>
+          <span style="width:1px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:3px"></span><span style="width:3px;background:transparent"></span>
+          <span style="width:2px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:1px"></span><span style="width:2px;background:transparent"></span>
+          <span style="width:2px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:3px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:1px"></span><span style="width:2px;background:transparent"></span>
+          <span style="width:4px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:2px"></span><span style="width:2px;background:transparent"></span>
+          <span style="width:1px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:3px"></span><span style="width:2px;background:transparent"></span>
+          <span style="width:2px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:1px"></span><span style="width:3px;background:transparent"></span>
+          <span style="width:2px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:3px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:1px"></span><span style="width:2px;background:transparent"></span>
+          <span style="width:2px"></span><span style="width:2px;background:transparent"></span>
+          <span style="width:4px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:1px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:3px"></span><span style="width:2px;background:transparent"></span>
+          <span style="width:2px"></span><span style="width:1px;background:transparent"></span>
+          <span style="width:1px"></span><span style="width:3px;background:transparent"></span>
+          <span style="width:3px"></span>
+        </div>
+        <div class="barcode-text">DA - 900 - ARCH - CLASS A - AUTHORIZED</div>
       </div>
     </div>
   </div>
@@ -416,121 +633,175 @@
 <!-- TICKER -->
 <div class="ticker">
   <div class="ticker-inner">
-    <span class="ticker-item">Complex One</span><span class="ticker-sep">—</span>
-    <span class="ticker-item">Complex Two</span><span class="ticker-sep">—</span>
-    <span class="ticker-item">Complex Three</span><span class="ticker-sep">—</span>
-    <span class="ticker-item">Complex Four</span><span class="ticker-sep">—</span>
-    <span class="ticker-item">Complex Five</span><span class="ticker-sep">—</span>
-    <span class="ticker-item">Complex Six</span><span class="ticker-sep">—</span>
-    <span class="ticker-item">Complex One</span><span class="ticker-sep">—</span>
-    <span class="ticker-item">Complex Two</span><span class="ticker-sep">—</span>
-    <span class="ticker-item">Complex Three</span><span class="ticker-sep">—</span>
-    <span class="ticker-item">Complex Four</span><span class="ticker-sep">—</span>
-    <span class="ticker-item">Complex Five</span><span class="ticker-sep">—</span>
-    <span class="ticker-item">Complex Six</span><span class="ticker-sep">—</span>
+    <span class="ticker-item">Complex One</span><span class="ticker-sep"> — </span>
+    <span class="ticker-item">Complex Two</span><span class="ticker-sep"> — </span>
+    <span class="ticker-item">Complex Three</span><span class="ticker-sep"> — </span>
+    <span class="ticker-item">Complex Four</span><span class="ticker-sep"> — </span>
+    <span class="ticker-item">Complex Five</span><span class="ticker-sep"> — </span>
+    <span class="ticker-item">Complex Six</span><span class="ticker-sep"> — </span>
+    <span class="ticker-item">District II Archive</span><span class="ticker-sep"> — </span>
+    <span class="ticker-item">Clearance Required</span><span class="ticker-sep"> — </span>
+    <span class="ticker-item">Complex One</span><span class="ticker-sep"> — </span>
+    <span class="ticker-item">Complex Two</span><span class="ticker-sep"> — </span>
+    <span class="ticker-item">Complex Three</span><span class="ticker-sep"> — </span>
+    <span class="ticker-item">Complex Four</span><span class="ticker-sep"> — </span>
+    <span class="ticker-item">Complex Five</span><span class="ticker-sep"> — </span>
+    <span class="ticker-item">Complex Six</span><span class="ticker-sep"> — </span>
+    <span class="ticker-item">District II Archive</span><span class="ticker-sep"> — </span>
+    <span class="ticker-item">Clearance Required</span><span class="ticker-sep"> — </span>
   </div>
 </div>
 
 <!-- ARCHIVE -->
 <section id="archive">
-  <div class="section-inner">
-    <div class="section-label">Archive — Field Records</div>
-    <div class="archive-grid">
-      <div class="archive-item">
-        <div class="item-num">001</div>
-        <div class="item-title">Complex One</div>
-        <div class="item-year">1972 — Ongoing</div>
-        <div class="item-desc">The first structure. A mound of compacted earth rising from the basin floor. Orientation determined by solar alignment at equinox.</div>
-      </div>
-      <div class="archive-item">
-        <div class="item-num">002</div>
-        <div class="item-title">Complex Two</div>
-        <div class="item-year">1974 — Ongoing</div>
-        <div class="item-desc">Concrete and stone. A passage that narrows. The architecture of threshold — entry and enclosure made monumental.</div>
-      </div>
-      <div class="archive-item">
-        <div class="item-num">003</div>
-        <div class="item-title">Complex Three</div>
-        <div class="item-year">1976 — Ongoing</div>
-        <div class="item-desc">Cut into the alluvial plain. The negative space as form. The removed earth is the sculpture.</div>
-      </div>
-      <div class="archive-item">
-        <div class="item-num">004</div>
-        <div class="item-title">Complex Four</div>
-        <div class="item-year">1981 — Ongoing</div>
-        <div class="item-desc">Lateral berms extending from a central axis. Shadow as measurement. Time recorded through movement of light across raw surfaces.</div>
-      </div>
-      <div class="archive-item">
-        <div class="item-num">005</div>
-        <div class="item-title">Complex Five</div>
-        <div class="item-year">1989 — Ongoing</div>
-        <div class="item-desc">A crater and a mound. Inversion as language. The earth displaced above and below the plane of the desert floor.</div>
-      </div>
-      <div class="archive-item">
-        <div class="item-num">006</div>
-        <div class="item-title">Complex Six</div>
-        <div class="item-year">1994 — Ongoing</div>
-        <div class="item-desc">The final complex. Five decades of accumulation. A city with no inhabitants, no commerce — only mass, geometry, and duration.</div>
-      </div>
-    </div>
+  <div class="sec-bar">
+    Archive — Field Records
+    <span>DA-ARCH / 001–006 / DISTRICT II</span>
   </div>
+
+  <table class="archive-table">
+    <thead>
+      <tr>
+        <th>Ref</th>
+        <th>Designation</th>
+        <th>Description</th>
+        <th>Period</th>
+        <th>Access</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="td-code">DA-001</td>
+        <td>
+          <div class="td-title">Complex One</div>
+          <div class="td-sub">Nevada Basin — Sector A</div>
+        </td>
+        <td class="td-desc">The first structure. A mound of compacted earth rising from the basin floor. Orientation determined by solar alignment at equinox.</td>
+        <td class="td-period">1972 — Ongoing</td>
+        <td class="td-status"><span class="status-tag open">Open</span></td>
+      </tr>
+      <tr>
+        <td class="td-code">DA-002</td>
+        <td>
+          <div class="td-title">Complex Two</div>
+          <div class="td-sub">Nevada Basin — Sector B</div>
+        </td>
+        <td class="td-desc">Concrete and stone. A passage that narrows. The architecture of threshold — entry and enclosure made monumental.</td>
+        <td class="td-period">1974 — Ongoing</td>
+        <td class="td-status"><span class="status-tag open">Open</span></td>
+      </tr>
+      <tr>
+        <td class="td-code">DA-003</td>
+        <td>
+          <div class="td-title">Complex Three</div>
+          <div class="td-sub">Nevada Basin — Sector C</div>
+        </td>
+        <td class="td-desc">Cut into the alluvial plain. The negative space as form. The removed earth is the sculpture.</td>
+        <td class="td-period">1976 — Ongoing</td>
+        <td class="td-status"><span class="status-tag open">Open</span></td>
+      </tr>
+      <tr>
+        <td class="td-code">DA-004</td>
+        <td>
+          <div class="td-title">Complex Four</div>
+          <div class="td-sub">Nevada Basin — Sector D</div>
+        </td>
+        <td class="td-desc">Lateral berms extending from a central axis. Shadow as measurement. Time recorded through movement of light across raw surfaces.</td>
+        <td class="td-period">1981 — Ongoing</td>
+        <td class="td-status"><span class="status-tag restricted">Restricted</span></td>
+      </tr>
+      <tr>
+        <td class="td-code">DA-005</td>
+        <td>
+          <div class="td-title">Complex Five</div>
+          <div class="td-sub">Nevada Basin — Sector E</div>
+        </td>
+        <td class="td-desc">A crater and a mound. Inversion as language. The earth displaced above and below the plane of the desert floor.</td>
+        <td class="td-period">1989 — Ongoing</td>
+        <td class="td-status"><span class="status-tag restricted">Restricted</span></td>
+      </tr>
+      <tr>
+        <td class="td-code">DA-006</td>
+        <td>
+          <div class="td-title">Complex Six</div>
+          <div class="td-sub">Nevada Basin — Lower Sector</div>
+        </td>
+        <td class="td-desc">Five decades of accumulation. A city with no inhabitants, no commerce — only mass, geometry, and duration.</td>
+        <td class="td-period">1994 — Ongoing</td>
+        <td class="td-status"><span class="status-tag sealed">Sealed</span></td>
+      </tr>
+    </tbody>
+  </table>
 </section>
 
-<!-- MONUMENT STRIP -->
-<div class="monument">
-  <div class="monument-inner">
-    <div class="monument-left">
-      <div class="monument-quote">
-        "I am interested in making a work of art that has the same relationship with the landscape as ancient works."
-      </div>
-      <div class="monument-attr">Michael Heizer — 1972</div>
-    </div>
-    <div class="monument-divider"></div>
-    <div class="monument-right">
-      <div class="monument-coords">
-        <span>SITE — Garden Valley, Nevada</span>
-        <span>LAT — 37.2041° N</span>
-        <span>LONG — 115.8015° W</span>
-        <span>MATERIAL — Earth, concrete, steel, granite</span>
-        <span>AREA — 1.5 square miles</span>
-        <span>STATUS — Under construction since 1972</span>
-      </div>
-    </div>
+<!-- RECORD BAND -->
+<div class="record-band">
+  <div class="record-cell">
+    <div class="record-num">52</div>
+    <div class="record-label">Years of Construction</div>
+    <div class="record-desc">Ongoing since 1972. No completion date registered in District II records.</div>
+  </div>
+  <div class="record-divider"></div>
+  <div class="record-cell">
+    <div class="record-num">40M</div>
+    <div class="record-label">Lbs of Earth Displaced</div>
+    <div class="record-desc">Movement documented across six major sites. Material classified as civic infrastructure.</div>
+  </div>
+  <div class="record-divider"></div>
+  <div class="record-cell">
+    <div class="record-num">∞</div>
+    <div class="record-label">Duration Intended</div>
+    <div class="record-desc">No terminus filed. The city endures beyond the span of any single authorized record.</div>
   </div>
 </div>
 
 <!-- ABOUT -->
 <section id="about">
-  <div class="section-inner">
-    <div class="section-label">About this Archive</div>
-    <div class="about-grid">
-      <div class="about-left">
-        <h2 class="about-title">Mass &amp;<br>Silence</h2>
-        <div class="about-body">
-          <p>Dustarchive is a documentation project focused on monumental earthworks — structures that exist in relationship with geological time rather than human time.</p>
-          <p>We record works that resist the gallery, the museum, the white cube. Works that require travel, endurance, and encounter with scale that cannot be reproduced.</p>
-          <p>The desert is not a backdrop. It is a medium. Dust is not absence — it is accumulation.</p>
-        </div>
+  <div class="sec-bar">
+    About this Archive
+    <span>Class A — District II — Authorized</span>
+  </div>
+  <div class="about-body">
+    <div class="about-left">
+      <div class="about-heading">Archive Registry — District II</div>
+      <div class="about-text">
+        <p>Dustarchive is a documentation project focused on monumental earthworks — structures that exist in relationship with geological time rather than human time.</p>
+        <p>We record works that resist the gallery, the museum, the white cube. Works that require travel, endurance, and encounter with scale that cannot be reproduced.</p>
+        <p>The desert is not a backdrop. It is a medium. Dust is not absence — it is accumulation.</p>
       </div>
-      <div class="about-right">
-        <div class="stat-block">
-          <div class="stat-item">
-            <div class="stat-n">52</div>
-            <div class="stat-l">Years of construction</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-n">6</div>
-            <div class="stat-l">Major complexes</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-n">40M</div>
-            <div class="stat-l">Pounds of earth moved</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-n">∞</div>
-            <div class="stat-l">Duration intended</div>
-          </div>
-        </div>
+    </div>
+    <div class="about-right">
+      <div class="field-row">
+        <div class="field-key">Site</div>
+        <div class="field-val">Garden Valley, Nevada</div>
+      </div>
+      <div class="field-row">
+        <div class="field-key">Coordinates</div>
+        <div class="field-val">37.2041° N — 115.8015° W</div>
+      </div>
+      <div class="field-row">
+        <div class="field-key">Material</div>
+        <div class="field-val">Earth, Concrete, Steel, Granite</div>
+      </div>
+      <div class="field-row">
+        <div class="field-key">Area</div>
+        <div class="field-val">1.5 Square Miles</div>
+      </div>
+      <div class="field-row">
+        <div class="field-key">District Classification</div>
+        <div class="field-val">II — Class A</div>
+      </div>
+      <div class="field-row">
+        <div class="field-key">Registry Status</div>
+        <div class="field-val" style="color:var(--open)">Active — Authorized</div>
+      </div>
+      <div class="field-row">
+        <div class="field-key">Record Reference</div>
+        <div class="field-val">DA-900-ARCH</div>
+      </div>
+      <div class="field-row">
+        <div class="field-key">Issue Date</div>
+        <div class="field-val">04.12.26</div>
       </div>
     </div>
   </div>
@@ -538,11 +809,18 @@
 
 <!-- FOOTER -->
 <footer id="contact">
-  <div class="footer-left">Dustarchive</div>
-  <div class="footer-right">
-    <span>Nevada Basin — United States</span><br>
-    <span>Archive open by appointment</span><br>
-    <span style="color:#4a3f34">© 2025</span>
+  <div class="footer-main">
+    <div class="footer-logo">Dustarchive</div>
+    <div class="footer-links">
+      <a href="#archive">Archive</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+  <div class="footer-sub">
+    <span>Dust Authority — District II Registry — Nevada Basin</span>
+    <span>II — 14 — A — 04-12-26</span>
+    <span>© 2026</span>
   </div>
 </footer>
 
